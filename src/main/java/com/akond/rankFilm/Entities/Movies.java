@@ -1,43 +1,75 @@
 package com.akond.rankFilm.Entities;
 
-import org.checkerframework.checker.units.qual.C;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.*;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-public class Movies {
+public class Movies implements Serializable {
 
     @Id
     @Column(name = "imdb_id")
-    private String imdbId;
+     private String imdbId;
     @Column(name ="ratings")
-    private int ratings;
+     private int ratings;
     @Column(name = "votes_number")
-    private long votesNumber;
+     private long votesNumber;
     @Column(name = "title_type")
-    private String titleType;
+     private String titleType;
     @Column(name = "primary_title")
-    private String primaryTitle;
+     private String primaryTitle;
     @Column(name = "original_title")
-    private String originalTitle;
+     private String originalTitle;
     @Column(name = "is_adult")
-    private boolean isAdult;
+     private boolean isAdult;
     @Column(name = "start_year")
-    private String startYear;
+     private String startYear;
     @Column(name = "end_year")
-    private String endYear;
+     private String endYear;
     @Column(name = "runtime_minutes")
-    private String runtimeMinutes;
+     private String runtimeMinutes;
     @Column(name = "generes_1")
-    private String generes1;
+     private String generes1;
     @Column(name = "generes_2")
-    private String generes2;
+     private String generes2;
     @Column(name = "generes_3")
-    private String generes3;
+     private String generes3;
 
 
+
+
+
+    @JsonIgnoreProperties("movies")
+    @OneToMany(mappedBy ="movies", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List <Principal> principals;
+
+    @JsonIgnoreProperties("movies")
+    @OneToMany(mappedBy = "movies")
+    private List<Akas> akas;
+
+    @JsonIgnoreProperties("movies")
+    @OneToOne(mappedBy = "movies")
+    private Oscars oscars;
+
+    public List<Akas> getAkas() {
+        return akas;
+    }
+
+    public void setAkas(List<Akas> akas) {
+        this.akas = akas;
+    }
+
+
+    public List<Principal> getPrincipals() {
+        return principals;
+    }
+
+    public void setPrincipals(List<Principal> principals) {
+        this.principals = principals;
+    }
 
 
     public String getImdbId() {
@@ -142,5 +174,13 @@ public class Movies {
 
     public void setGeneres3(String generes3) {
         this.generes3 = generes3;
+    }
+
+    public Oscars getOscars() {
+        return oscars;
+    }
+
+    public void setOscars(Oscars oscars) {
+        this.oscars = oscars;
     }
 }
